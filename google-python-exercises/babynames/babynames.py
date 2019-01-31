@@ -41,7 +41,24 @@ def extract_names(filename):
   ['2006', 'Aaliyah 91', Aaron 57', 'Abagail 895', ' ...]
   """
   # +++your code here+++
-  return
+  file = open(filename, 'r')
+  filestring = file.read()
+  list = []
+  
+  # Extract the year for these babynames
+  match1 = re.search(r'Popularity in (\d\d\d\d)', filestring)
+  list.append(match1.group(1))
+  
+  # Extract each name and its associated rank: grouping will be 0:rank, 1:male name 2:female name
+  match2 = re.findall(r'<tr align="right"><td>(\d+)</td><td>(\w+)</td><td>(\w+)</td>', filestring)
+  
+  for item in match2:
+    list.append(item[1] + ' ' + item[0])
+    list.append(item[2] + ' ' + item[0])
+  
+  file.close()
+  
+  return sorted(list)
 
 
 def main():
@@ -63,6 +80,20 @@ def main():
   # +++your code here+++
   # For each filename, get the names, then either print the text output
   # or write it to a summary file
+  if summary:
+    # Write the names to a summary file
+    f = open('BabyNamesSummary.txt', 'w')
+    for file in args:
+      f.write(str(extract_names(file)))
+      f.write('\n')
+  
+    f.close()
+  
+  else:
+    # Print the text output
+    for file in args:
+      print extract_names(file)
+        
   
 if __name__ == '__main__':
   main()
