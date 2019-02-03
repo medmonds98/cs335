@@ -82,17 +82,18 @@ def main():
   # or write it to a summary file
   if summary:
     # Write the names to a summary file
-    f = open('BabyNamesSummary.txt', 'w')
     for file in args:
-      f.write(str(extract_names(file)))
-      f.write('\n')
+      f = open(file + '.summary', 'w')
+      for item in extract_names(file):
+        f.write(str(item)+'\n')
   
     f.close()
   
   else:
     # Print the text output
     for file in args:
-      print extract_names(file)
+      for item in extract_names(file):
+        print item
         
   
 if __name__ == '__main__':
