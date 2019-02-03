@@ -38,6 +38,7 @@ print_words() and print_top().
 """
 
 import sys
+from string import maketrans
 
 # +++your code here+++
 # Define print_words(filename) and print_top(filename) functions.
@@ -69,26 +70,31 @@ def print_top(filename):
 
 
 def count_words(filename):
-  file = open(filename, 'r')
+  file = open(filename, 'rU')
   words = []
   words_counts = {}
   
+  # Initialize trans table
+  puncts = '.,!?\";:()[]{}-'
+  transtab = maketrans(puncts, '              ')
+  
   # Get the words from the file, split by the whitespace
   for line in file:
-    words += line.split()
-    
+      words += (line.translate(transtab)).split()
     
   # Iterate through each word in the list, adding each new word
   # and count of that word to the dictionary, make sure to format
   # each word to be lower case
   for item in words:
-    item = (item.strip('.,!?')).lower()
+    item = item.lower()
     
     if item in words_counts:
       words_counts[item] += 1
     else:
       words_counts[item] = 1
       
+  file.close()
+
   return words_counts
 
 
