@@ -75,12 +75,11 @@ def count_words(filename):
   words_counts = {}
   
   # Initialize trans table
-  puncts = '.,!?\";:()[]{}-'
-  transtab = maketrans(puncts, '              ')
+  puncts = '\'.,!?\";:()[]{}_*=&$%|<>~/\\'
   
   # Get the words from the file, split by the whitespace
   for line in file:
-      words += (line.translate(transtab)).split()
+      words += line.translate(None, puncts).strip().split()
     
   # Iterate through each word in the list, adding each new word
   # and count of that word to the dictionary, make sure to format
