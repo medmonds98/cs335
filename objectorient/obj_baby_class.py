@@ -10,6 +10,11 @@ class Babynames :
     def __init__(self, year):
         self.year = year
         
+
+# This function will process a web page and print the baby names found
+# inside to a file
+def process_page(url):
+    print '\n', url
     
 def main():
     # Manage console commands
@@ -45,7 +50,13 @@ def main():
                         
                 print addresses
                 
+                # get the root url for the page from args[0]
+                root_url = re.search(r'https://([\w.]*)', args[0])
+                
                 # For each address, open the url and grab a list of babynames from that page
+                for address in addresses:
+                    process_page(root_url.group() + address)
+                
                 
         except IOError:
             print "could not access web address"
