@@ -8,35 +8,52 @@ import sys
 
 class Babynames :
     year = None
+    gender = ''
     names = {}
     
     def __init__(self, url):
-        # upon instantiation, set t
         self.url = url
         
     def build_names(self):
-        # strip the year from the url,
+        # strip the year and get a gender (if there is one) from the url,
         # year is last 4 digits of each link
         self.year = self.url[-4:]
         
+        # gender can be found in the link
+        if bool(re.search(r'boy', self.url)):
+            self.gender = 'Boy'
+            
+        elif bool(re.search(r'girl', self.url)):
+            self.gender = 'Girl'
+        
         # build the list of names from the url
         pagetext = urllib.urlopen(self.url)
-        matches = re.findall(r'<a href="[\w/]*?">(\w*?)</a><span class="plusMinus">', pagetext.read())
+        matches = re.findall(r'<a href="[\w/]*?">(\w*?)</a>', pagetext.read())
         
         i = 1
         for match in matches:
             self.names[i] = match
             i += 1
         
+    def output(self, file):
         
-    def output(self):
-        print self.names, '\n'
-        #print 'Popular Baby Names in ', self.year
-        #print '---------------------------'
+        print self.names
         
-        #for item in self.names.keys().sort():
-        #    print item, ". ", self.names[item]
+        """
+        # Write the gender, year, and names to the given file
+        f = open(file, 'w')
         
+        # Adjust for the spacing if there is no gender
+        if len(self.gender) > 0:
+            f.write('Popular ' + self.gender + ' Baby Names in ' + self.year)
+        else:
+            f.write('Popular Baby Names in ' + self.year)
+            
+        f.write('\n' + '-----------------------------')
+        
+        for item in self.names.keys():
+            f.write( str(item) + ". " + self.names[item] + '\n')
+        """
     
 def main():
     # Manage console commands
@@ -69,17 +86,16 @@ def main():
                 #Refine the search further
                 for item in link_lists:
                     links = re.findall(r'<a href="(.*?)">', item)
-                    
+                
+                
                     #instantiate a Babynames obj with each full url, and put them in a list
                     for link in links:
-                        bn = Babynames(root_url.group() + link)
-                        bn.build_names()
-                        babynames_list.append( bn )
-                
-                # Print all babynames to different files
-                for item in babynames_list:
-                    print id(item)
-                    item.output()
+                        babynames_list.append( Babynames(root_url.group() + link) )
+                        
+                    #build the name lists of each object, then write them to a unique file
+                    for item in babynames_list:
+                        item.build_names()
+                        item.output(item.gender + 'babynames' + item.year + '.txt')
                 
         except IOError:
             print "could not access web address"
