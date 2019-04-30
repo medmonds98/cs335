@@ -15,7 +15,16 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from polls import views as polls_views
+
+admin.autodiscover()
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^$', polls_views.index),
+    url(r'^polls/$',polls_views.index),
+    url(r'^polls/newpoll/$', polls_views.getPoll),
+    url(r'^polls/results$', polls_views.full_results),
+    url(r'^polls/(?P<poll_id>\d+)/results/$', polls_views.results),
+    url(r'^polls/(?P<poll_id>\d+)/$', polls_views.vote),
+    url(r'^admin/',admin.site.urls),
 ]

@@ -1,0 +1,13 @@
+{% for poll in poll_list %}
+    <h4> Results for Poll: {{poll.question}}</h4>
+    
+    {% for choice in choice_list %}
+        {% if choice.poll == poll.question %}
+            <p> Votes for {{choice.choice}} : {{choice.votes}}</p>
+        {% endif %}
+    {% endfor %}
+
+    <p> ************************************************* </p>
+{% endfor %}
+
+<a href="/"> Back </a>

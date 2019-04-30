@@ -1,0 +1,9 @@
+<h4> Results for Poll: {{poll.question}}</h4>
+
+{% for choice in choice_list %}
+    <p> Votes for {{choice.choice}} : {{choice.votes}}</p>
+{% endfor %}
+
+<p> ************************************************* </p>
+
+<a href="/"> Back </a>

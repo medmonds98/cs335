@@ -1,0 +1,11 @@
+<h4> {{ poll.question }} </h4>
+
+<form action="/polls/{{poll.id}}/" method="post">
+    <input type = "radio" name = choice value=0> {{choice0.choice}} <br>
+    
+    <input type = "radio" name = choice value=1> {{choice1.choice}} <br>
+    
+    <input type = "radio" name = choice value=2> {{choice2.choice}} <br>
+    
+    <input type="submit" value="Submit"/>
+</form>
